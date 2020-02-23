@@ -1,1 +1,4 @@
 Crear_Gato:<Mish>
+Conviene_Comer_Raton:<Mish>,<52>,<50>,<40>
+Enviar_Comer_Raton:<Mish>,<52>,<50>,<40>
+Dar_de_Comer: <Mish>,<100>

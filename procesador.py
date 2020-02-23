@@ -3,6 +3,7 @@ import os
 from Gato import *
 
 listaGato = []
+
 def leerArchivo(archivoCompeto):
     try:
         archivo = open(f"{archivoCompeto}","r")
@@ -17,6 +18,7 @@ def leerArchivo(archivoCompeto):
 
 
 def obetenerRuta():
+    print("-----------Seleccionar Ruta---------------")
     print("1.Ingrese la ruta")
     print("2.El archivo esta en la misma carpeta")
     opcion = input()
@@ -75,27 +77,108 @@ def proceso(arreglo):
         print("Este es el arreglo:", valor," En la poscion: ",indice)
         gato = valor.find("Crear_Gato")
         pajaro = valor.find("Crear_Pajaro")
+        conviene = valor.find("Conviene_Comer_Raton")
+        enviar = valor.find("Enviar_Comer_Raton")
+        comer = valor.find("Dar_de_Comer")
         if gato != -1:
             print("Se va crear gato")
             creaAnimalGato(valor)
         if pajaro != -1:
             print("Se va crear pajaro")
             creaAnimalPajaro(valor)
+        if conviene !=-1:
+            print("Conviene")
+            convieneComer(valor)
+        if enviar != -1:
+            print("Enviar")
+            enviarComer(valor)
+        if comer != -1:
+            print("comer")
+
 
         
-idGato = 1
-contador = 1
+def convieneComer(arreglo):
+    comando = arreglo.split(",")
+    posUno = comando[0]
+    nombre = posUno[posUno.find('<') + 1 :posUno.find('>')]
+    nombreGato = buscarGato(nombre)
+    if nombreGato != None:
+        print("Se encontro el gato:",nombreGato.getNombre())
+        posDos = comando[1]
+        posTres = comando[2]
+        ejeX = posDos[posDos.find('<') + 1 :posDos.find('>')]
+        ejeY = posTres[posTres.find('<') + 1 :posTres.find('>')]
+        posCuatro = comando[3]
+        pesoRaton = posCuatro[posCuatro.find('<') + 1 :posCuatro.find('>')]
+        if isInteger(ejeX) and isInteger(ejeY) and isInteger(pesoRaton):
+            gastarEnergia = int(ejeX) + int(ejeY)
+            ganarEnergia = int(pesoRaton) + 12
+            print("Energia a gastar es :",(gastarEnergia))
+            print("Energia a ganar es: ",ganarEnergia)
+            diferencia = ganarEnergia - gastarEnergia
+            if  diferencia > 0:
+                print("Ganara un total de energia: ",diferencia)
+            elif diferencia == 0:
+                print("No ganara pero tampoco perdera energia: ",diferencia)
+            else:
+                print("Perdera una energia de: ",diferencia)
+
+    else:
+        print("No se encotro el gato")
+
+def enviarComer(arreglo):
+    comando = arreglo.split(",")
+    posUno = comando[0]
+    nombre = posUno[posUno.find('<') + 1 :posUno.find('>')]
+    nombreGato = buscarGato(nombre)
+    if nombreGato != None:
+        print("Se encontro el gato:",nombreGato.getNombre())
+        posDos = comando[1]
+        posTres = comando[2]
+        ejeX = posDos[posDos.find('<') + 1 :posDos.find('>')]
+        ejeY = posTres[posTres.find('<') + 1 :posTres.find('>')]
+        posCuatro = comando[3]
+        pesoRaton = posCuatro[posCuatro.find('<') + 1 :posCuatro.find('>')]
+        if isInteger(ejeX) and isInteger(ejeY) and isInteger(pesoRaton):
+            print("Energia actual: ",nombreGato.getEnergia())
+            gastarEnergia = int(ejeX) + int(ejeY)
+            ganarEnergia = int(pesoRaton) + 12
+            diferencia = ganarEnergia - gastarEnergia
+            total = nombreGato.getEnergia() + (diferencia)
+            nombreGato.setEnergia(total)
+            print("Se modifico la energia de: ",nombreGato.getNombre(),"la energia actualmete es: ", nombreGato.getEnergia())
+            if  nombreGato.getEnergia() < 11 and nombreGato.getEnergia() > 0:
+                print("Esto exhasuto. Dame de comer mi energia es:",nombreGato.getEnergia())
+            elif nombreGato.getEnergia() > 10:
+                print("Ya comiii, ahora mi energia es:", nombreGato.getEnergia())
+            elif nombreGato.getEnergia() <= 0:
+                nombreGato.setEnergia(0)
+                nombreGato.setEstado("Muerto")
+                print("Ya me mori :(")
+
+           
+    else:
+        print("No se encotro el gato")
+
 def crearGato(nombre):
-    gatoCrear = Gato(idGato,nombre,100,"Vivo")
+    gatoCrear = Gato(nombre,50,"Vivo")
     listaGato.append(gatoCrear)
-    contador = contador + 1
     
-    verGatos()
     
 def verGatos():
     for valor in listaGato:
-        print("Id:",valor.idGato," nombre:",valor.nombre)
+        print(" nombre:",valor.nombre)
         
+def buscarGato(nombre):
+    for valor in listaGato:
+        if nombre == valor.getNombre():
+            return valor
+    
 
 
-
+def isInteger(val):
+    try:
+        isinstance(int(val), int)
+        return True
+    except ValueError as error:
+        return False
