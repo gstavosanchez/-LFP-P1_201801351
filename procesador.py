@@ -1,6 +1,7 @@
 from io import open
 import os
 from Gato import *
+import escribir
 
 listaGato = []
 
@@ -80,6 +81,7 @@ def proceso(arreglo):
         conviene = valor.find("Conviene_Comer_Raton")
         enviar = valor.find("Enviar_Comer_Raton")
         comer = valor.find("Dar_de_Comer")
+        resumenPersonal = valor.find("Resumen_Mascota")
         if gato != -1:
             print("Se va crear gato")
             creaAnimalGato(valor)
@@ -94,6 +96,10 @@ def proceso(arreglo):
             enviarComer(valor)
         if comer != -1:
             print("comer")
+            darComer(valor)
+        if resumenPersonal != -1:
+            print ("Resumen Personal")
+            resumen(valor)
 
 
         
@@ -102,7 +108,7 @@ def convieneComer(arreglo):
     posUno = comando[0]
     nombre = posUno[posUno.find('<') + 1 :posUno.find('>')]
     nombreGato = buscarGato(nombre)
-    if nombreGato != None:
+    if nombreGato != None and nombreGato.getTipo() == "Gato":
         print("Se encontro el gato:",nombreGato.getNombre())
         posDos = comando[1]
         posTres = comando[2]
@@ -116,12 +122,24 @@ def convieneComer(arreglo):
             print("Energia a gastar es :",(gastarEnergia))
             print("Energia a ganar es: ",ganarEnergia)
             diferencia = ganarEnergia - gastarEnergia
-            if  diferencia > 0:
-                print("Ganara un total de energia: ",diferencia)
-            elif diferencia == 0:
-                print("No ganara pero tampoco perdera energia: ",diferencia)
-            else:
-                print("Perdera una energia de: ",diferencia)
+            if nombreGato.getEnergia() == 0:
+                nombreGato.setEstado("Muerto")
+                text = f"{nombre}, Ya me mori."
+                escribir.imprimirConviene(text)
+            else :
+                if  diferencia > 0:
+                    print("Ganara un total de energia: ",diferencia)
+                    text = f"{nombre}, Si me conviene comer el raton."
+                    print(text)
+                    escribir.imprimirConviene(text)
+                elif diferencia == 0:
+                    print("No ganara pero tampoco perdera energia: ",diferencia)
+                else:
+                    print("Perdera una energia de: ",diferencia)
+                    text = f"{nombre}, Esta muy lejos.No me conviene"
+                    print(text)
+                    escribir.imprimirConviene(text)
+                    
 
     else:
         print("No se encotro el gato")
@@ -131,7 +149,7 @@ def enviarComer(arreglo):
     posUno = comando[0]
     nombre = posUno[posUno.find('<') + 1 :posUno.find('>')]
     nombreGato = buscarGato(nombre)
-    if nombreGato != None:
+    if nombreGato != None and nombreGato.getTipo() == "Gato":
         print("Se encontro el gato:",nombreGato.getNombre())
         posDos = comando[1]
         posTres = comando[2]
@@ -146,23 +164,70 @@ def enviarComer(arreglo):
             diferencia = ganarEnergia - gastarEnergia
             total = nombreGato.getEnergia() + (diferencia)
             nombreGato.setEnergia(total)
+            nombreGato.setEjeX(int(ejeX))
+            nombreGato.setEjeY(int(ejeY))
             print("Se modifico la energia de: ",nombreGato.getNombre(),"la energia actualmete es: ", nombreGato.getEnergia())
             if  nombreGato.getEnergia() < 11 and nombreGato.getEnergia() > 0:
                 print("Esto exhasuto. Dame de comer mi energia es:",nombreGato.getEnergia())
+                tex = f"{nombre}, Estoy exhausto.Dame de comer 20 gramos para ir"
+                escribir.imprimirConviene(tex)
             elif nombreGato.getEnergia() > 10:
                 print("Ya comiii, ahora mi energia es:", nombreGato.getEnergia())
+                energi = nombreGato.getEnergia()
+                tex = f"{nombre}, Ya me comi al  raton, ahora mi energia es {energi}." 
+                escribir.imprimirConviene(tex)
             elif nombreGato.getEnergia() <= 0:
                 nombreGato.setEnergia(0)
                 nombreGato.setEstado("Muerto")
                 print("Ya me mori :(")
-
-           
+                tex = f"{nombre}, Ya me mori."
+                escribir.imprimirConviene(tex) 
+    
     else:
         print("No se encotro el gato")
 
+def darComer(arreglo):
+    comado = arreglo.split(",")
+    posUno = comado[0]
+    nombre = posUno[posUno.find('<') + 1 :posUno.find('>')]
+    gato = buscarGato(nombre)
+    if gato != None and nombreGato.getTipo() == "Gato":
+        posDos = comado[1]
+        pesoRato = posDos[posDos.find('<') + 1 :posDos.find('>')]
+        comida = int(pesoRato) + 12
+        if  gato.getEstado() == "Muerto":
+            print("Muy tarde estoy muerto")
+            tex = f"{nombre}, Muy tarde. Ya me mori." 
+            escribir.imprimirConviene(tex)
+        else:
+            energia = comida + gato.getEnergia()
+            gato.setEnergia(energia)
+            print("Gracias ahora mi energia es :", gato.getEnergia())
+            tex = f"{nombre}, Gracias. Ahora mi energia es {energia}" 
+            escribir.imprimirConviene(tex)
+
+    
+
 def crearGato(nombre):
-    gatoCrear = Gato(nombre,50,"Vivo")
+    gatoCrear = Gato(nombre,50,"Vivo","Gato",0,0)
     listaGato.append(gatoCrear)
+    escribir.imprimirCrearGato(gatoCrear)
+
+def resumen(arreglo):
+    comando = arreglo.split(":")
+    porDos = comando[1]
+    nombre = porDos[porDos.find('<') + 1 :porDos.find('>')]
+    gato = buscarGato(nombre)
+    if gato != None and gato.getTipo()== "Gato":
+        print("Imprimir resumen del gato")
+        energia = gato.getEnergia()
+        ejeX = gato.getEjeX()
+        ejeY = gato.getEjeY()
+        estado = gato.getEstado()
+        tipo = gato.getTipo()
+        text = f"{nombre}, Energia: {energia}, X:{ejeX}, Y:{ejeY}, {tipo}, {estado}"
+        escribir.imprimirConviene(text)
+
     
     
 def verGatos():
