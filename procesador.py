@@ -70,7 +70,8 @@ def creaAnimalPajaro(animal):
             print("Posicion de <:", valor.find('>'))
             nombreAnimal = valor[valor.find('<') + 1 :valor.find('>')]
             print(nombreAnimal)
-            print("Se creo el Pajaro: ",nombreAnimal)    
+            print("Se creo el Pajaro: ",nombreAnimal)
+            crearPajaro(nombreAnimal)    
 
 
 def proceso(arreglo):
@@ -82,24 +83,40 @@ def proceso(arreglo):
         enviar = valor.find("Enviar_Comer_Raton")
         comer = valor.find("Dar_de_Comer")
         resumenPersonal = valor.find("Resumen_Mascota")
+        enviarMensaje = valor.find("Puede_Entregar_Mensaje")
+        siEnviarMensaje = valor.find("Enviar_Mensaje")
+        res = valor.find("Resumen_Global")
         if gato != -1:
             print("Se va crear gato")
             creaAnimalGato(valor)
-        if pajaro != -1:
+        elif pajaro != -1:
             print("Se va crear pajaro")
             creaAnimalPajaro(valor)
-        if conviene !=-1:
+        elif conviene !=-1:
             print("Conviene")
             convieneComer(valor)
-        if enviar != -1:
+        elif enviar != -1:
             print("Enviar")
             enviarComer(valor)
-        if comer != -1:
+        elif comer != -1:
             print("comer")
             darComer(valor)
-        if resumenPersonal != -1:
+        elif resumenPersonal != -1:
             print ("Resumen Personal")
             resumen(valor)
+        elif enviarMensaje != -1:
+            print ("Entregar Mensaje")
+            puedeEntregar(valor)
+        elif siEnviarMensaje != -1:
+            print("Enviar mensaje")
+            enviarMensajePajaro(valor)
+        elif res != -1:
+            print("Resumen Global")
+            resumenGlobal()
+        else:
+            print("Comando incorrecto")
+
+
 
 
         
@@ -143,6 +160,80 @@ def convieneComer(arreglo):
 
     else:
         print("No se encotro el gato")
+
+def puedeEntregar(arreglo):
+    comando = arreglo.split(",")
+    posUno = comando[0]
+    nombre = posUno[posUno.find('<') + 1 :posUno.find('>')]
+    print(f"{nombre}")
+    pajaro = buscarGato(nombre)
+    if pajaro != None and pajaro.getTipo() == "Pajaro":
+        posDos = comando[1]
+        posTres = comando[2]
+        ejeX = posDos[posDos.find('<') + 1 :posDos.find('>')]
+        ejeY = posTres[posTres.find('<') + 1 :posTres.find('>')]
+        
+        if isInteger(ejeX) and  isInteger(ejeY):
+            gastarEnergia = ((int(ejeX) + int(ejeY)) / 100) + 10
+            if (pajaro.getEnergia() - gastarEnergia) <= 15:
+                    total = int(ejeX) + int(ejeY)
+                    texto = f"{nombre}, Estoy exhausto.Dame de comer {total} para ir."
+                    escribir.imprimirConviene(texto)
+            elif (pajaro.getEnergia() - gastarEnergia) >= 16:
+                texto = f"{nombre}, Si puedo ir a dejar el mensaje."
+                escribir.imprimirConviene(texto)
+            elif pajaro.getEnergia() <= 0 : 
+                texto = f"{nombre}, Ya me mori.  :("
+                escribir.imprimirConviene(texto)
+        else:
+            print("No se puede reconcer las cordenas")
+            
+def enviarMensajePajaro(arreglo):
+    comando = arreglo.split(",")
+    posUno = comando[0]
+    nombre = posUno[posUno.find('<') + 1 :posUno.find('>')]
+    print(f"{nombre}")
+    pajaro = buscarGato(nombre)
+    if pajaro != None and pajaro.getTipo() == "Pajaro":
+        posDos = comando[1]
+        posTres = comando[2]
+        ejeX = posDos[posDos.find('<') + 1 :posDos.find('>')]
+        ejeY = posTres[posTres.find('<') + 1 :posTres.find('>')]
+        if isInteger(ejeX) and  isInteger(ejeY):
+            pajaro.setEjeX(int(ejeX))
+            pajaro.setEjeY(int(ejeY))
+            gastarEnergia = ((int(ejeX) + int(ejeY)) / 100) + 10    
+            if (pajaro.getEnergia() - gastarEnergia) <= 15 :
+                    total = int(ejeX) + int(ejeY)
+                    texto = f"{nombre}, Estoy exhausto.Dame de comer {total} para ir."
+                    pajaro.setEnergia((pajaro.getEnergia()+ total))
+                    escribir.imprimirConviene(texto)
+            elif (pajaro.getEnergia() - gastarEnergia) >= 16:
+                texto = f"{nombre}, Ya me fui a dejar el mensaje a ({ejeX},{ejeY})"
+                pajaro.setEnergia((pajaro.getEnergia() - gastarEnergia))
+                escribir.imprimirConviene(texto)
+            elif pajaro.getEnergia() <= 0 : 
+                texto = f"{nombre}, Ya me mori.  :("
+                pajaro.setEstado("Muerto")
+                pajaro.setEnergia(0)
+                escribir.imprimirConviene(texto)
+        else:
+            print("No se puede reconcer las cordenas")
+
+def resumenGlobal():
+    titulo = "---------------------Resumen Global---------------------"
+    escribir.imprimirConviene(titulo)
+    for valor in listaGato:
+        nombre = valor.getNombre()
+        energia = valor.getEnergia()
+        ejeX = valor.getEjeX()
+        ejeY = valor.getEjeY()
+        tipo = valor.getTipo()
+        estado = valor.getEstado()
+        text = f"{nombre}, Energia: {energia}, X:{ejeX}, Y:{ejeY}, {tipo}, {estado}"
+        escribir.imprimirConviene(text)
+
+
 
 def enviarComer(arreglo):
     comando = arreglo.split(",")
@@ -191,7 +282,21 @@ def darComer(arreglo):
     posUno = comado[0]
     nombre = posUno[posUno.find('<') + 1 :posUno.find('>')]
     gato = buscarGato(nombre)
-    if gato != None and nombreGato.getTipo() == "Gato":
+    if gato != None and gato.getTipo() == "Gato":
+        posDos = comado[1]
+        pesoRato = posDos[posDos.find('<') + 1 :posDos.find('>')]
+        comida = int(pesoRato) + 12
+        if  gato.getEstado() == "Muerto":
+            print("Muy tarde estoy muerto")
+            tex = f"{nombre}, Muy tarde. Ya me mori." 
+            escribir.imprimirConviene(tex)
+        else:
+            energia = comida + gato.getEnergia()
+            gato.setEnergia(energia)
+            print("Gracias ahora mi energia es :", gato.getEnergia())
+            tex = f"{nombre}, Gracias. Ahora mi energia es {energia}" 
+            escribir.imprimirConviene(tex)
+    elif gato != None and gato.getTipo() == "Pajaro":
         posDos = comado[1]
         pesoRato = posDos[posDos.find('<') + 1 :posDos.find('>')]
         comida = int(pesoRato) + 12
@@ -206,12 +311,26 @@ def darComer(arreglo):
             tex = f"{nombre}, Gracias. Ahora mi energia es {energia}" 
             escribir.imprimirConviene(tex)
 
+
     
 
 def crearGato(nombre):
-    gatoCrear = Gato(nombre,50,"Vivo","Gato",0,0)
-    listaGato.append(gatoCrear)
-    escribir.imprimirCrearGato(gatoCrear)
+    gatoExiste = buscarGato(nombre)
+    if gatoExiste == None or (nombre == gatoExiste.getNombre() and gatoExiste.getTipo() != "Gato"):
+        gatoCrear = Gato(nombre,50,"Vivo","Gato",0,0)
+        listaGato.append(gatoCrear)
+        escribir.imprimirCrearGato(gatoCrear)
+    else:
+        print("Ya existe el gato")
+
+def crearPajaro(nombre):
+    pajaro = buscarGato(nombre)
+    if pajaro == None or (nombre == pajaro.getNombre() and pajaro.getTipo() != "Pajaro"):
+        nuevoPajaro = Gato(nombre,50,"Vivo","Pajaro",0,0)
+        listaGato.append(nuevoPajaro)
+        text = f"Se creo el pajaro {nombre}"
+        escribir.imprimirConviene(text)
+
 
 def resumen(arreglo):
     comando = arreglo.split(":")
@@ -220,6 +339,15 @@ def resumen(arreglo):
     gato = buscarGato(nombre)
     if gato != None and gato.getTipo()== "Gato":
         print("Imprimir resumen del gato")
+        energia = gato.getEnergia()
+        ejeX = gato.getEjeX()
+        ejeY = gato.getEjeY()
+        estado = gato.getEstado()
+        tipo = gato.getTipo()
+        text = f"{nombre}, Energia: {energia}, X:{ejeX}, Y:{ejeY}, {tipo}, {estado}"
+        escribir.imprimirConviene(text)
+    elif gato != None and gato.getTipo()== "Pajaro":
+        print("Imprimir resumen del Pajaro")
         energia = gato.getEnergia()
         ejeX = gato.getEjeX()
         ejeY = gato.getEjeY()

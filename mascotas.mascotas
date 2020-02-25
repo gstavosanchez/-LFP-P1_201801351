@@ -1,5 +1,12 @@
+Crear_Pajaro:<Loro>
+Puede_Entregar_Mensaje:<Loro>,<10>,<20>
+Enviar_Mensaje:<Loro>,<10>,<10>
+Dar_de_Comer: <Loro>,<50>
+Resumen_Mascota:<Loro>
 Crear_Gato:<Mish>
 Conviene_Comer_Raton:<Mish>,<52>,<50>,<80>
 Enviar_Comer_Raton:<Mish>,<52>,<50>,<80>
 Dar_de_Comer: <Mish>,<20>
 Resumen_Mascota:<Mish>
+Crear_Gato:<Pancho>
+Resumen_Global
