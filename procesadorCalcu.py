@@ -2,26 +2,33 @@ from io import open
 import os
 import time
 import ManejadorMate
+import modulos
 
 def getRuta():
     print("-----------Seleccionar Ruta de Educacion---------------")
     print("1.Ingrese la ruta")
     print("2.El archivo esta en la misma carpeta")
+    print("3.Regresar a Menu anterior")
     opcion = input()
     if opcion == "1":
         print("Por favor ingrese sola la ruta")
         ruta = input()
+        ruta = ruta.strip()
         print("Escriba el nombre del archivo")
         arch = input()
+        arch = arch.strip()
         rutaAbs = f"{ruta}\{arch}.mascotas"
         return rutaAbs
     elif opcion == "2":
         directorioActual = os.getcwd()
         print("Escriba el nombre del archivo")
         nombre = input()
+        nombre = nombre.strip()
         rutaAbsoluta = f"{directorioActual}\{nombre}.edu"
         print(f"Es es nombre del archivo: {rutaAbsoluta}")
         return rutaAbsoluta
+    elif opcion == "3":
+        modulos.menuEducacion()
     else:
         print("Opcion Incorreta")
         getRuta()

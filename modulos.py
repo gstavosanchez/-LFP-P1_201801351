@@ -12,8 +12,7 @@ def menuPrinpal():
         if opcion == "1":
             menuEntretimineto()
         elif opcion == "2":
-            ruta = procesadorCalcu.getRuta()
-            procesadorCalcu.leerArchivo(ruta)
+          menuEducacion()
         else:
             if opcion != "SALIR":
                 print("Opcion Incorrecta")
@@ -36,6 +35,31 @@ def menuEntretimineto():
             arreglo= procesador.leerArchivo(ruta)
         elif opcion == "2":
            menuPrinpal()
+        else:
+            if opcion != "SALIR":
+                print("Opcion Incorrecta")
+        
+        if opcion == "SALIR":
+            break 
+
+
+def menuEducacion():
+    while True:
+        print("-----------Menu Educacion---------------")
+        print("1) Educacion Calculadora")
+        print("2) Almacen de Caracteres")
+        print("3) Menu Principal")
+        print("Presione SALIR si lo desea")
+        print("Seleccione una opcion:")
+        opcion = input()
+        print(f"Usted selecciono: {opcion} ")
+        if opcion == "1":
+            ruta = procesadorCalcu.getRuta()
+            procesadorCalcu.leerArchivo(ruta)
+        elif opcion == "2":
+           print("Funcion Carcterter")
+        elif opcion == "3":
+            menuPrinpal()
         else:
             if opcion != "SALIR":
                 print("Opcion Incorrecta")
