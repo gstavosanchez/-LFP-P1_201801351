@@ -39,8 +39,6 @@ def leerArchivo(archivoCompeto):
 
 def procesadorComando(arreglo):
     for indice,valor in enumerate(arreglo):
-        
-        
         if valor.find("Variable") == 0:
             setVariable(valor)
         elif valor.find("Imprimir_Mensaje") == 0:

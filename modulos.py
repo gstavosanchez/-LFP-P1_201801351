@@ -32,7 +32,6 @@ def menuEntretimineto():
         opcion = input()
         print(f"Usted selecciono: {opcion} ")
         if opcion == "1":
-            print("hodkfj")
             ruta = procesador.obetenerRuta()   
             arreglo= procesador.leerArchivo(ruta)
         elif opcion == "2":
