@@ -42,10 +42,6 @@ def obetenerRuta():
         obetenerRuta()
 
 
-# ruta = obetenerRuta()   
-# arreglo=leerArchivo(ruta)
-
-
 
 def creaAnimalGato(animal):
     comando = animal.split(":")

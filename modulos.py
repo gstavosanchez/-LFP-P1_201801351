@@ -1,4 +1,5 @@
 import procesador
+import procesadorCalcu
 def menuPrinpal():
     while True:
         print("-----------Menu Principal---------------")
@@ -11,7 +12,8 @@ def menuPrinpal():
         if opcion == "1":
             menuEntretimineto()
         elif opcion == "2":
-            print("Como esta")
+            ruta = procesadorCalcu.getRuta()
+            procesadorCalcu.leerArchivo(ruta)
         else:
             if opcion != "SALIR":
                 print("Opcion Incorrecta")
@@ -34,7 +36,7 @@ def menuEntretimineto():
             ruta = procesador.obetenerRuta()   
             arreglo= procesador.leerArchivo(ruta)
         elif opcion == "2":
-            menuPrinpal()
+           menuPrinpal()
         else:
             if opcion != "SALIR":
                 print("Opcion Incorrecta")

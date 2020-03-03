@@ -1,4 +1,3 @@
-
 class Gato():
     nombre = ""
     energia = 0

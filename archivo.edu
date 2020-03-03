@@ -1,0 +1,8 @@
+Variable:A,3
+Variable:B,10 + A
+Potencia:2 + A,3 * A
+Postfija:50 + 25 * 3
+Imprimir_Mensaje:"Este es el valor de A"
+Imprimir:A
+Imprimir_Mensaje:"Este es el valor de B"
+Imprimir:B
