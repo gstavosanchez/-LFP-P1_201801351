@@ -17,7 +17,7 @@ def getRuta():
         print("Escriba el nombre del archivo")
         arch = input()
         arch = arch.strip()
-        rutaAbs = f"{ruta}\{arch}.mascotas"
+        rutaAbs = f"{ruta}\{arch}.edu"
         return rutaAbs
     elif opcion == "2":
         directorioActual = os.getcwd()

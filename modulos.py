@@ -1,5 +1,6 @@
 import procesador
 import procesadorCalcu
+import procesadorAlmacen
 def menuPrinpal():
     while True:
         print("-----------Menu Principal---------------")
@@ -57,7 +58,8 @@ def menuEducacion():
             ruta = procesadorCalcu.getRuta()
             procesadorCalcu.leerArchivo(ruta)
         elif opcion == "2":
-           print("Funcion Carcterter")
+            ruta = procesadorAlmacen.getRuta()
+            procesadorAlmacen.leerArchivo(ruta)
         elif opcion == "3":
             menuPrinpal()
         else:
