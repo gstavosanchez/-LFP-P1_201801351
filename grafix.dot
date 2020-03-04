@@ -1,0 +1,18 @@
+digraph { 
+node[shape=record]; 
+ graph[pencolor=transparent]; 
+ rankdir=LR; 
+p1[label="{<anterior> 0 |<data> 4 |<next>}"]; 
+p2[label="{<anterior> 1 |<data> H |<next>}"]; 
+p3[label="{<anterior> 2 |<data> o |<next>}"]; 
+p4[label="{<anterior> 3 |<data> l |<next>}"]; 
+p5[label="{<anterior> 4 |<data> a |<next>}"]; 
+p6[label="{<anterior> 5 |<data> 5 |<next>}"]; 
+p7[label="{<anterior> 6 |<data> J |<next>}"]; 
+p8[label="{<anterior> 7 |<data> u |<next>}"]; 
+p9[label="{<anterior> 8 |<data> a |<next>}"]; 
+p10[label="{<anterior> 9 |<data> n |<next>}"]; 
+p11[label="{<anterior> 10 |<data> a |<next>}"]; 
+
+ edge[tailclip=false,arrowtail=dot,dir=both]; 
+ }

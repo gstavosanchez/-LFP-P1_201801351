@@ -2,6 +2,8 @@ import sys
 import re
 from Variable import *
 import procesadorAlmacen
+from io import open
+import os
 
 listaVar = []
 listaLetra = []
@@ -94,5 +96,28 @@ def imprimirLetra(nombre):
             
             
 def generaGrafix():
+    bloqueUno = ""
+    parametros = ""
+    for i in range(len(listaLetra)):
+        letra = listaLetra[i]
+        pos = str(i)
+        po = str(pos).strip()
+        var = i + 1
+        va = str(var)
+        #bloqueUno +=' En la cesta son %s y %s \n' % ( letra , po )  
+        bloqueUno += 'p%s[label="{<anterior> %s |<data> %s |<next>}"]; \n' %(va,po,letra)
     
+
+    parametros = "digraph { \n" + "node[shape=record]; \n graph[pencolor=transparent]; \n rankdir=LR; \n"+ bloqueUno +"\n edge[tailclip=false,arrowtail=dot,dir=both]; \n }"
+    print(parametros)
+    imprimirGrafix(parametros)
+
+
+
+
+def imprimirGrafix(texto):
+    archivo  = open("grafix.dot","w")
+    archivo.writelines(texto)
+    archivo.close()
+
 

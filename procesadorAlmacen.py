@@ -66,7 +66,7 @@ def procesadorComando(arreglo):
         elif valor.find("Imprimir") == 0:
             setImprimirLetras(valor)
         elif valor.find("Generar_grafo") == 0:
-            pass
+            generarGrafix()
     
 
 
@@ -98,7 +98,7 @@ def setImprimirLetras(arreglo):
     parametros = parametros.strip()
     ManejadorAlmacen.imprimirLetra(parametros)
 
-
-
+def generarGrafix():
+    ManejadorAlmacen.generaGrafix()
 
 
